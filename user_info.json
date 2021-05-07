@@ -1,0 +1,30 @@
+{
+  "UserInfo": [
+    {
+      "Username": "aidan_5554",
+      "Created": "05/07/2021 20:06:45",
+      "Account Info": {
+        "DispName": "Aidan",
+        "Score": 0,
+        "Friends": 1,
+        "Pending Adds": [],
+        "All Friends": [
+          "BBY69"
+        ]
+      }
+    },
+    {
+      "Username": "BBY69",
+      "Created": "05/07/2021 20:06:59",
+      "Account Info": {
+        "DispName": "BABES",
+        "Score": 0,
+        "Friends": 1,
+        "Pending Adds": [],
+        "All Friends": [
+          "aidan_5554"
+        ]
+      }
+    }
+  ]
+}
