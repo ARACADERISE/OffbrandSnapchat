@@ -197,6 +197,38 @@ class SnapUi:
 
                         print('\t', i + 1, ' > ', self.all_user_info['UserInfo'][x]['Account Info']['DispName'], f'({self.user_info["Account Info"]["All Friends"][i]})')
             print('\n----------------------------------')
+    
+    def _user_exists_(self, user):
+        if not user == self.user_info['Username'] and not user == self.user_info['Account Info']['DispName']:
+            for i in range(len(self.all_user_info['UserInfo'])):
+                if self.all_user_info['UserInfo'][i]['Username'] == user or self.all_user_info['UserInfo'][i]['Account Info']['DispName'] == user:
+
+                    if not 'Mutual friends' in self.all_user_info['UserInfo'][i]['Account Info']:
+                        self.all_user_info['UserInfo'][i]['Account Info'].update({'Mutual friends':[]})
+                    if not 'Mutual friends' in self.user_info['Account Info']:
+                        self.user_info['Account Info'].update({'Mutual friends': []})
+
+                    # come back to this later.
+                    for x in range(len(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'])):
+                        if self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.user_info['Account Info']['All Friends']:
+                            if len(self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends']) == 0:
+                                self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'].append({self.user_info['Username']: [self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x]]})
+
+                                self.user_info['Account Info']['Mutual friends'].append({self.all_user_info['UserInfo'][i]['Username']: [self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x]]})
+                            else:
+                                for t in range(len(self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'])):
+                                    self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
+                                    self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
+                    
+                    if not user in self.user_info['Account Info']['All Friends']:
+                        add_as_friend = int(input('Add as friend?[0 yes, 1 no] > '))
+
+                        if add_as_friend == 0:
+                            if self.user_info['Username'] not in self.all_user_info['UserInfo'][i]['Account Info']['All Friends']:
+                                self.all_user_info['UserInfo'][i]['Account Info']['Pending Adds'].append(self.user_info['Username'])
+                    break
+        else:
+            self.__profile__()
 
     def __start__(self):
         """ KEEP THE PROGRAM RUNNING """
@@ -238,14 +270,32 @@ class SnapUi:
 
                 input('PRESS [enter] TO CONTINUE.')
             if choice == 4:
-                pass  # do something
+                user = input('Username: ')
+
+                self._user_exists_(user)
+
+                input('PRESS [enter] TO CONTINUE.')
             if choice == 5:
                 self.cursor.execute(
                     f'UPDATE UserInfo SET logged_in = 1 WHERE username = "{self.user_info["Username"]}"'
                 )
                 self.db.commit()
+                os.system('clear')
                 print(
-                    f'''\n\n\t\t\t{Fore.BLACK}{Back.WHITE}:)        👻  𝓒𝓸𝓶 𝓮 𝓑𝓪𝓬𝓴 𝓐𝓰𝓪𝓲𝓷,{self.display_name}! 👻        (:\n{Style.RESET_ALL}'''
+                    f'''{Fore.YELLOW}
+░█████╗░███████╗███████╗██████╗░██████╗░░█████╗░███╗░░██╗██████╗░
+██╔══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗████╗░██║██╔══██╗
+██║░░██║█████╗░░█████╗░░██████╦╝██████╔╝███████║██╔██╗██║██║░░██║
+██║░░██║██╔══╝░░██╔══╝░░██╔══██╗██╔══██╗██╔══██║██║╚████║██║░░██║
+╚█████╔╝██║░░░░░██║░░░░░██████╦╝██║░░██║██║░░██║██║░╚███║██████╔╝
+░╚════╝░╚═╝░░░░░╚═╝░░░░░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░
+
+░██████╗███╗░░██╗░█████╗░██████╗░░░██╗██╗░░░██╗░░███╗░░░░░░█████╗░░░░░░███╗░░██╗░░
+██╔════╝████╗░██║██╔══██╗██╔══██╗░██╔╝██║░░░██║░████║░░░░░██╔══██╗░░░░████║░░╚██╗░
+╚█████╗░██╔██╗██║███████║██████╔╝██╔╝░╚██╗░██╔╝██╔██║░░░░░██║░░██║░░░██╔██║░░░╚██╗
+░╚═══██╗██║╚████║██╔══██║██╔═══╝░╚██╗░░╚████╔╝░╚═╝██║░░░░░██║░░██║░░░╚═╝██║░░░██╔╝
+██████╔╝██║░╚███║██║░░██║██║░░░░░░╚██╗░░╚██╔╝░░███████╗██╗╚█████╔╝██╗███████╗██╔╝░
+╚═════╝░╚═╝░░╚══╝╚═╝░░╚═╝╚═╝░░░░░░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░╚════╝░╚═╝╚══════╝╚═╝░░{Fore.RESET}\n\n\t\t\t{Fore.BLACK}{Back.WHITE}:)        👻  𝓒𝓸𝓶 𝓮 𝓑𝓪𝓬𝓴 𝓐𝓰𝓪𝓲𝓷,{self.display_name}! 👻        (:\n{Style.RESET_ALL}'''
                 )
 
                 # Update all_user_info, then write it to the json file
@@ -266,7 +316,7 @@ class SnapUi:
                 if self.total_friends < self.user_info['Account Info'][
                         'Friends']:
                     print(
-                        f'You gained {self.user_info["Account Info"]["Friends"] - self.total_friends} today!\n'
+                        f'You gained {self.user_info["Account Info"]["Friends"] - self.total_friends} friend(s) today!\n'
                     )
                 if self.user_score == self.user_info['Account Info'][
                         'Score'] and self.total_friends == self.user_info[
