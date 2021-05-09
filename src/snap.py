@@ -146,12 +146,13 @@ class SnapUi:
 
     """ ALL HELPER FUNCTIONS FOR THE __start__ FUNCTION. NONE WILL BE USED IN MAIN BUT THE __start__ FUNCTION. """
 
-    def __profile__(self):
+    def __profile__(self, other = None):
         """ PRINT THE USERS PROFILE """
-        self.__adds__()
-        print(f'''
-\t\t\t\t{self.display_name}\n\t\t\t\t({self.user_info['Username']})\n\t\t\t---------------------\n\t\t\tScore:\t\t{self.user_info['Account Info']['Score']}\n\t\t\tFriends:\t{self.user_info['Account Info']['Friends']}\n\t\t\t---------------------\n\n\t\t\tJoined: {self.user_info['Created']}\n'''
-              )
+        if other == None: # add functionality for this
+            self.__adds__()
+            print(f'''
+    \t\t\t\t{self.display_name}\n\t\t\t\t({self.user_info['Username']})\n\t\t\t---------------------\n\t\t\tScore:\t\t{self.user_info['Account Info']['Score']}\n\t\t\tFriends:\t{self.user_info['Account Info']['Friends']}\n\t\t\t---------------------\n\n\t\t\tJoined: {self.user_info['Created']}\n'''
+                )
 
     def __add_user__(self, username):
         for i in range(len(self.all_user_info['UserInfo'])):
@@ -193,18 +194,20 @@ class SnapUi:
     
     def _all_friends_(self):
         if not self.user_info['Account Info']['All Friends'] == []:
-            print('\n\n---------- ALL FRIENDS ----------\n')
+            print('\n\n\t\t\t---------- ALL FRIENDS ----------\n')
             for i in range(len(self.user_info['Account Info']['All Friends'])):
                 for x in range(len(self.all_user_info['UserInfo'])):
                     if self.all_user_info['UserInfo'][x]['Username'] == self.user_info['Account Info']['All Friends'][i]:
 
-                        print('\t', i + 1, ' > ', self.all_user_info['UserInfo'][x]['Account Info']['DispName'], f'({self.user_info["Account Info"]["All Friends"][i]})')
-            print('\n----------------------------------')
+                        print('\t\t\t', i + 1, ' > ', self.all_user_info['UserInfo'][x]['Account Info']['DispName'], f'({self.user_info["Account Info"]["All Friends"][i]})')
+            print('\n\t\t\t----------------------------------')
     
     def _user_exists_(self, user):
         if not user == self.user_info['Username'] and not user == self.user_info['Account Info']['DispName']:
             for i in range(len(self.all_user_info['UserInfo'])):
                 if self.all_user_info['UserInfo'][i]['Username'] == user or self.all_user_info['UserInfo'][i]['Account Info']['DispName'] == user:
+
+                    user = self.all_user_info['UserInfo'][i]['Username'] 
 
                     if not 'Mutual friends' in self.all_user_info['UserInfo'][i]['Account Info']:
                         self.all_user_info['UserInfo'][i]['Account Info'].update({'Mutual friends':[]})
@@ -233,13 +236,21 @@ class SnapUi:
                             if self.user_info['Username'] not in self.all_user_info['UserInfo'][i]['Account Info']['All Friends']:
                                 self.all_user_info['UserInfo'][i]['Account Info']['Pending Adds'].append(self.user_info['Username'])
                     else:
-                        print(f'You and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) are friends!\n')
+                        print(f'\t\t\tYou and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) are friends!\n')
+                    
                     for d in self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends']:
                         if self.user_info['Username'] in d:
-                            print(f'You and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) have {len(self.all_user_info["UserInfo"][i]["Account Info"]["Mutual friends"])} mutal friend(s)\nMutual Friends:\n---------------')
+                            print(f'\t\t\tYou and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) have {len(self.all_user_info["UserInfo"][i]["Account Info"]["Mutual friends"])} mutual friend(s):\n')
                             for i in range(len(d[self.user_info['Username']])):
-                                print('\t', i + 1, ' > ', d[self.user_info['Username']][i], '\n')
+                                for x in range(len(self.all_user_info['UserInfo'])):
+                                    if self.all_user_info['UserInfo'][x]['Username'] == d[self.user_info['Username']][i]:
+                                        print('\t\t\t\t',i+1,f' > {self.all_user_info["UserInfo"][x]["Account Info"]["DispName"]}({d[self.user_info["Username"]][i]})')
+                            print('\n')
                     break
+                else:
+                    if i == len(self.all_user_info['UserInfo'])-1:
+                        print(f'[ERR]: {user} does not exist.\n')
+                        break
         else:
             self.__profile__()
 
