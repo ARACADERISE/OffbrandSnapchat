@@ -150,7 +150,7 @@ class SnapUi:
         """ PRINT THE USERS PROFILE """
         self.__adds__()
         print(f'''
-\t{self.display_name}\n\t({self.user_info['Username']})\n----------------\nScore:\t\t{self.user_info['Account Info']['Score']}\nFriends:\t{self.user_info['Account Info']['Friends']}\n----------------\n\nJoined: {self.user_info['Created']}\n'''
+\t\t\t\t{self.display_name}\n\t\t\t\t({self.user_info['Username']})\n\t\t\t---------------------\n\t\t\tScore:\t\t{self.user_info['Account Info']['Score']}\n\t\t\tFriends:\t{self.user_info['Account Info']['Friends']}\n\t\t\t---------------------\n\n\t\t\tJoined: {self.user_info['Created']}\n'''
               )
 
     def __add_user__(self, username):
@@ -160,9 +160,12 @@ class SnapUi:
                     self.all_user_info['UserInfo'][i]['Account Info'].update({'Pending Adds':[]})
 
                 if not self.user_info['Username'] in self.all_user_info['UserInfo'][i]['Account Info']['Pending Adds']:
-                    self.all_user_info['UserInfo'][i]['Account Info']['Pending Adds'].append(self.user_info['Username'])
+                    if not self.user_info['Username'] in self.all_user_info['UserInfo'][i]['Account Info']['All Friends']: 
+                        self.all_user_info['UserInfo'][i]['Account Info']['Pending Adds'].append(self.user_info['Username'])
 
-                    print(f'Successfully sent request to {username}!\n')
+                        print(f'Successfully sent request to {username}!\n')
+                    else:
+                        print(f'{self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({username}) is already your friend!\n')
                 else: print('Request already sent!')
                 break
             if i == len(self.all_user_info['UserInfo']) - 1:
@@ -217,15 +220,25 @@ class SnapUi:
                                 self.user_info['Account Info']['Mutual friends'].append({self.all_user_info['UserInfo'][i]['Username']: [self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x]]})
                             else:
                                 for t in range(len(self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'])):
-                                    self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
-                                    self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
+                                    if not self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']]:
+                                        self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
+                                    if not self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']]:
+                                        self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
                     
                     if not user in self.user_info['Account Info']['All Friends']:
+                        print(f'You and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) are not friends :c\n')
                         add_as_friend = int(input('Add as friend?[0 yes, 1 no] > '))
 
                         if add_as_friend == 0:
                             if self.user_info['Username'] not in self.all_user_info['UserInfo'][i]['Account Info']['All Friends']:
                                 self.all_user_info['UserInfo'][i]['Account Info']['Pending Adds'].append(self.user_info['Username'])
+                    else:
+                        print(f'You and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) are friends!\n')
+                    for d in self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends']:
+                        if self.user_info['Username'] in d:
+                            print(f'You and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) have {len(self.all_user_info["UserInfo"][i]["Account Info"]["Mutual friends"])} mutal friend(s)\nMutual Friends:\n---------------')
+                            for i in range(len(d[self.user_info['Username']])):
+                                print('\t', i + 1, ' > ', d[self.user_info['Username']][i], '\n')
                     break
         else:
             self.__profile__()

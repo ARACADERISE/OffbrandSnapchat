@@ -12,7 +12,13 @@
           "BBY69",
           "test"
         ],
-        "Mutual friends": []
+        "Mutual friends": [
+          {
+            "test": [
+              "BBY69"
+            ]
+          }
+        ]
       }
     },
     {
@@ -25,8 +31,7 @@
         "Pending Adds": [],
         "All Friends": [
           "aidan_5554"
-        ],
-        "Mutual friends": []
+        ]
       }
     },
     {
@@ -38,7 +43,15 @@
         "Friends": 1,
         "Pending Adds": [],
         "All Friends": [
-          "aidan_5554"
+          "aidan_5554",
+          "BBY69"
+        ],
+        "Mutual friends": [
+          {
+            "aidan_5554": [
+              "BBY69"
+            ]
+          }
         ]
       }
     }
