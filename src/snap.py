@@ -15,7 +15,7 @@ class SetupSnap:
             self.all_user_info = {'UserInfo': []}
         self.db = sqlite3.connect('offbrandsnap.db')
         self.cursor = self.db.cursor()
-        self.db.execute('''
+        self.cursor.execute('''
 CREATE TABLE IF NOT EXISTS UserInfo (
     username string,
     password string,
@@ -223,10 +223,11 @@ class SnapUi:
                                 self.user_info['Account Info']['Mutual friends'].append({self.all_user_info['UserInfo'][i]['Username']: [self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x]]})
                             else:
                                 for t in range(len(self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'])):
-                                    if not self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']]:
-                                        self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
-                                    if not self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']]:
-                                        self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
+                                    if self.user_info['Username'] in self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t]:
+                                        if not self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']]:
+                                            self.all_user_info['UserInfo'][i]['Account Info']['Mutual friends'][t][self.user_info['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
+                                        if not self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x] in self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']]:
+                                            self.user_info['Account Info']['Mutual friends'][t][self.all_user_info['UserInfo'][i]['Username']].append(self.all_user_info['UserInfo'][i]['Account Info']['All Friends'][x])
                     
                     if not user in self.user_info['Account Info']['All Friends']:
                         print(f'You and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) are not friends :c\n')
@@ -246,6 +247,8 @@ class SnapUi:
                                     if self.all_user_info['UserInfo'][x]['Username'] == d[self.user_info['Username']][i]:
                                         print('\t\t\t\t',i+1,f' > {self.all_user_info["UserInfo"][x]["Account Info"]["DispName"]}({d[self.user_info["Username"]][i]})')
                             print('\n')
+                    else:
+                        print(f'\t\t\tYou and {self.all_user_info["UserInfo"][i]["Account Info"]["DispName"]}({user}) have no mutual friends :c\n')
                     break
                 else:
                     if i == len(self.all_user_info['UserInfo'])-1:

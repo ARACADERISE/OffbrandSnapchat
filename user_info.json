@@ -2,54 +2,67 @@
   "UserInfo": [
     {
       "Username": "aidan_5554",
-      "Created": "05/07/2021 20:06:45",
+      "Created": "05/10/2021 02:52:46",
       "Account Info": {
         "DispName": "Aidan",
         "Score": 0,
         "Friends": 2,
         "Pending Adds": [],
         "All Friends": [
-          "BBY69",
-          "test"
+          "test",
+          "bruh"
         ],
         "Mutual friends": [
           {
-            "test": [
-              "BBY69"
+            "bruh": [
+              "test"
             ]
           }
         ]
       }
     },
     {
-      "Username": "BBY69",
-      "Created": "05/07/2021 20:06:59",
+      "Username": "test",
+      "Created": "05/10/2021 02:53:00",
       "Account Info": {
-        "DispName": "BABES",
+        "DispName": "tester",
         "Score": 0,
-        "Friends": 1,
+        "Friends": 2,
         "Pending Adds": [],
         "All Friends": [
-          "aidan_5554"
+          "aidan_5554",
+          "bruh"
+        ],
+        "Mutual friends": [
+          {
+            "bruh": [
+              "aidan_5554"
+            ]
+          }
         ]
       }
     },
     {
-      "Username": "test",
-      "Created": "05/08/2021 18:17:48",
+      "Username": "bruh",
+      "Created": "05/10/2021 02:54:13",
       "Account Info": {
-        "DispName": "tester",
+        "DispName": "BRUH",
         "Score": 0,
-        "Friends": 1,
+        "Friends": 2,
         "Pending Adds": [],
         "All Friends": [
           "aidan_5554",
-          "BBY69"
+          "test"
         ],
         "Mutual friends": [
           {
+            "test": [
+              "aidan_5554"
+            ]
+          },
+          {
             "aidan_5554": [
-              "BBY69"
+              "test"
             ]
           }
         ]
